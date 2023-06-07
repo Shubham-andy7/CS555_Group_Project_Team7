@@ -1,9 +1,11 @@
 from datetime import datetime
+from prettytable import PrettyTable
 
 def get_ind_fam_details(gedcomfile):
     individuals = []
     individual = []
     indidict = {}
+    famdict = {}
     is_individual = False
 
     for line in gedcomfile:
@@ -85,19 +87,26 @@ def get_ind_fam_details(gedcomfile):
         print('\n\n')
 
     # Return Families
-    return indidict
+    return indidict, famdict
 
 
 def display_gedcom_table(individuals, families):
+
     # Print Individuals table
-    print("Individuals:")
-    for individual in individuals:
-        print(individual)
+    inditable = PrettyTable()
+    inditable.field_names = ['ID', 'Name', 'Gender', 'Alive', 'Death', 'Child', 'Spouse', 'Age', 'Birthday']
+    for i in individuals.keys():
+        inditable.add_row(list(individuals[i].values()))
+    print('Individuals:')
+    print(inditable)
 
     # Print Families table
-    print("Families:")
-    for family in families:
-        print(family)
+    famtable = PrettyTable()
+    famtable.field_names = ['ID', 'Married', 'Divorced', 'Husband ID', 'Wife ID', 'Children']
+    for i in families.keys():
+        famtable.add_row(list(families[i].values()))
+    print('Families:')
+    print(famtable)
 
 
 if __name__ == "__main__":
